@@ -1,22 +1,28 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import useCachedResources from './hooks/useCachedResources';
+import DatabaseContext from './database/DatabaseContext';
+import useBackendResources from './hooks/useBackendResources';
 import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+import Navigation from './navigation/RootTabNavigator';
 
-export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+const App = () => {
+    const database = useBackendResources();
+    const colorScheme = useColorScheme();
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
+    if (!database) {
+        return null;
+    }
+
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
+        <SafeAreaProvider>
+            <DatabaseContext.Provider value={database}>
+                <Navigation colorScheme={colorScheme} />
+                <StatusBar />
+            </DatabaseContext.Provider>
+        </SafeAreaProvider>
     );
-  }
-}
+};
+
+export default App;
