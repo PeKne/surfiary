@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 
-import { Text, View } from '../components/Themed';
+import { Text, View } from '../components/themed';
 import { EquipmentStackScreenProps } from '../navigation/navigationTypes';
 
 const styles = StyleSheet.create({
@@ -22,8 +22,6 @@ const styles = StyleSheet.create({
 });
 
 const EquipmentListScreen = ({ navigation }: EquipmentStackScreenProps<'EquipmentList'>) => {
-    // const db = useDatabaseContext();
-    // db.readLocation('name', 'board').then(res => console.log(res));
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Equipment Tab</Text>

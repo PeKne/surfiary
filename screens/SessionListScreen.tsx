@@ -1,37 +1,43 @@
 import React from 'react';
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 
-import { Text, View } from '../components/Themed';
+import Divider from '../components/Divider';
+import SessionCard from '../components/SessionCard';
+import { SafeAreaView } from '../components/themed';
 import { SessionStackScreenProps } from '../navigation/navigationTypes';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
     },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: '80%',
-    },
+    flatContainer: { paddingHorizontal: 18, justifyContent: 'center', paddingTop: 5 },
 });
 
+const MOCKDATA = [1, 2, 3, 4, 5, 6, 7, 8]; // TODO delete
 const SessionListScreen = ({ navigation }: SessionStackScreenProps<'SessionList'>) => {
     // const db = useDatabaseContext();
     // db.readLocation('name', 'board').then(res => console.log(res));
+
+    const openDetailScreen = () => {
+        navigation.navigate('SessionDetail');
+    };
+    const renderItem = () => <SessionCard openDetail={openDetailScreen} />;
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Session Tab</Text>
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-            <Pressable onPress={() => navigation.navigate('SessionDetail')}>
-                <Text> go to Detail screen</Text>
-            </Pressable>
-        </View>
+        <SafeAreaView style={styles.container}>
+            <FlatList
+                contentContainerStyle={styles.flatContainer}
+                data={MOCKDATA}
+                renderItem={renderItem}
+                ItemSeparatorComponent={Divider}
+                keyExtractor={item => item.toString()}
+            />
+        </SafeAreaView>
     );
 };
 

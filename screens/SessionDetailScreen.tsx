@@ -1,33 +1,64 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Text, View } from '../components/Themed';
+import { Text, View, Icon } from '../components/themed';
+
 import { SessionStackScreenProps } from '../navigation/navigationTypes';
+import DetailAttribute from '../components/DetailAttribute';
+import Divider from '../components/Divider';
+import SessionEquipment from '../components/SessionEquipment';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        alignContent: 'flex-start',
+        paddingHorizontal: 10,
+    },
+    attributesContainer: {
+        paddingTop: 20,
+        paddingBottom: 5,
+        alignContent: 'flex-start',
+    },
+    sectionContainer: {
+        width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingTop: 15,
     },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: '80%',
+    notes: {
+        textAlign: 'left',
     },
 });
 
 const SessionDetailScreen = ({ navigation }: SessionStackScreenProps<'SessionDetail'>) => {
-    // const db = useDatabaseContext();
-    // db.readLocation('name', 'board').then(res => console.log(res));
+    useEffect(() => {
+        navigation.setOptions({
+            title: 'Detailed screen',
+            headerRight: () => Icon({ name: 'pencil-square-o', onPress: () => navigation.navigate('SessionEdit') }),
+        });
+    }, [navigation]);
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Session Detail</Text>
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+            <View style={styles.sectionContainer}>
+                <DetailAttribute icon="map-marker" title="Location" value="Echo beach, Canggu" />
+                <DetailAttribute icon="calendar" title="Date" value="2nd July 2022" />
+                <DetailAttribute icon="clock-o" title="Duration" value="2 hours" />
+            </View>
+            <Divider />
+            <Text format="h2">Equipment:</Text>
+            <View style={styles.sectionContainer}>
+                {/* TODO make clickable */}
+                <SessionEquipment />
+            </View>
+            <Text format="h2">Notes:</Text>
+            <View style={styles.sectionContainer}>
+                <Text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur rhoncus a diam in tempus. Aliquam
+                    sagittis ligula at elit congue rhoncus. Integer feugiat, lorem sed rhoncus auctor, nibh eros
+                    condimentum nibh, quis scelerisque turpis metus id lacus. Fusce sed risus at ex auctor commodo eget
+                    eu odio
+                </Text>
+            </View>
         </View>
     );
 };
