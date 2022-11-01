@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import Colors from '../../constants/Colors';
+import FontSizes from '../../constants/FontSizes';
 import { View, Text } from '../themed';
 import { InputContainerProps } from './formTypes';
 
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
     },
     error: {
-        fontSize: 12,
+        fontSize: FontSizes.hint,
         color: 'red',
     },
 });

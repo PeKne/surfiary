@@ -5,11 +5,12 @@ import { StyleSheet } from 'react-native';
 import { TextInput } from '../themed';
 import InputContainer from './InputContainer';
 import { BaseFormInputProps } from './formTypes';
+import FontSizes from '../../constants/FontSizes';
 
 const styles = StyleSheet.create({
     inputText: {
         paddingTop: 1,
-        fontSize: 15,
+        fontSize: FontSizes.body,
     },
 });
 

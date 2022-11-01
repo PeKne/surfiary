@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text as DefaultText, TextProps as DefaultTextProps } from 'react-native';
 
 import useThemeColor from '../../hooks/useThemeColor';
+import FontSizes from '../../constants/FontSizes';
 
 type TextProps = DefaultTextProps & {
     format?: 'h1' | 'h2' | 'h3' | 'body';
@@ -9,18 +10,18 @@ type TextProps = DefaultTextProps & {
 
 const styles = StyleSheet.create({
     body: {
-        fontSize: 15,
+        fontSize: FontSizes.body,
     },
     h1: {
-        fontSize: 21,
+        fontSize: FontSizes.h1,
         fontWeight: '600',
     },
     h2: {
-        fontSize: 18,
+        fontSize: FontSizes.h2,
         fontWeight: '600',
     },
     h3: {
-        fontSize: 16,
+        fontSize: FontSizes.h3,
         fontWeight: '600',
     },
 });

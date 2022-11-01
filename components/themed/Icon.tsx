@@ -1,6 +1,5 @@
 import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
-import { ViewStyle } from 'react-native';
 import useThemeColor from '../../hooks/useThemeColor';
 
 type IconProps = React.ComponentProps<typeof FontAwesome>;

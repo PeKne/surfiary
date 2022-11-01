@@ -7,7 +7,7 @@ const DeleteIcon = ({ onDelete }: { onDelete(): void }) => {
         return Alert.alert('Delete this record?', 'Record XY will be deleted permanently...', [
             {
                 text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
+                onPress: () => null, // TODO: implement real delete behaviour
                 style: 'cancel',
             },
             { text: 'OK', onPress: onDelete },

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, Image, ImageSourcePropType } from 'react-native';
 
 import { View } from './themed';

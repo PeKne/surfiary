@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native';
 import InputContainer from './InputContainer';
 import { BaseFormInputProps } from './formTypes';
 import { Icon, SelectDropdown } from '../themed';
+import FontSizes from '../../constants/FontSizes';
 
 const styles = StyleSheet.create({
     button: {
@@ -19,13 +20,13 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.2,
     },
     buttonText: {
-        fontSize: 15,
+        fontSize: FontSizes.body,
         textAlign: 'left',
         paddingHorizontal: 0,
         marginHorizontal: 0,
     },
     rowText: {
-        fontSize: 15,
+        fontSize: FontSizes.body,
         textAlign: 'left',
         paddingHorizontal: 0,
     },
@@ -49,7 +50,7 @@ const FormSelectInput = ({
         <Controller
             defaultValue={defaultValue}
             name={name}
-            render={({ field: { onChange }, fieldState: { error } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <InputContainer title={title} errorMessage={error?.message}>
                     <SelectDropdown
                         data={Object.keys(options)}
@@ -64,6 +65,12 @@ const FormSelectInput = ({
                         buttonTextStyle={styles.buttonText}
                         rowTextStyle={styles.rowText}
                         rowStyle={styles.row}
+                        // renderCustomizedRowChild={selectedItem => (
+                        //     <AutocompleteSuggestion
+                        //         text={selectedItem}
+                        //         onPress={() => onChange(options[selectedItem])}
+                        //     />
+                        // )} // TODO fix selection
                         renderDropdownIcon={isOpened => <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} />}
                         renderSearchInputLeftIcon={() => <Icon name="search" size={15} />}
                         renderSearchInputRightIcon={() => <Icon name="plus-square" size={18} />}
