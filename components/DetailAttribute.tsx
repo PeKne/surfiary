@@ -6,9 +6,7 @@ import { View, Text, Icon } from './themed';
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        // paddingLeft: 30,
         paddingVertical: 10,
-        // justifyContent: "space-between"
     },
     iconContainer: {
         width: '12%',
@@ -19,12 +17,10 @@ const styles = StyleSheet.create({
         width: '22%',
         fontWeight: '600',
         textAlign: 'center',
-        // paddingLeft: 20,
     },
     value: {
         width: '60%',
         textAlign: 'center',
-        // paddingLeft: 25,
     },
 });
 

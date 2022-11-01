@@ -23,7 +23,7 @@ const FormTagsInput = ({
             render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <InputContainer title={title} errorMessage={error?.message}>
                     <AutocompleteTags
-                        renderTag={(tag, onPress) => <Tag key={tag} text={tag} onPress={onPress} />}
+                        renderTag={(tag, onPress) => <Tag key={tag} label={tag} onPress={onPress} />}
                         renderSuggestion={(suggenstion, onPress) => (
                             <AutocompleteSuggestion text={suggenstion} onPress={onPress} />
                         )}

@@ -9,8 +9,7 @@ const Divider = () => {
         borderWidth: 0.5,
         borderColor: mutedColor,
         width: 'auto',
-        marginTop: 9,
-        marginBottom: 10,
+        marginVertical: 5,
         marginHorizontal: -5,
         zIndex: -100,
     };

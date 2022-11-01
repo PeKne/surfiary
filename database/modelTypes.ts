@@ -23,7 +23,7 @@ export type SurfboardModel = {
     length: number;
     volume: number;
     type: SurfboardType;
-    date: string; // TODO : fix me
+    date: number;
 };
 export type SurfboardRow = keyof SurfboardModel;
 export type SurfboardRowType = SurfboardModel[SurfboardRow];

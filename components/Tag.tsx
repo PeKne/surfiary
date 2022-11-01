@@ -16,11 +16,11 @@ const styles = StyleSheet.create({
 });
 
 type TagProps = {
-    text: string;
-    onPress?(tag: GestureResponderEvent): void;
+    label: string;
+    onPress?(event: GestureResponderEvent): void;
 };
 
-const Tag = ({ text, onPress = undefined }: TagProps) => {
+const Tag = ({ label, onPress = undefined }: TagProps) => {
     const textColor = useThemeColor('text');
     return (
         <Pressable
@@ -29,7 +29,7 @@ const Tag = ({ text, onPress = undefined }: TagProps) => {
             }}
             onPress={onPress}
         >
-            <Text>{text}</Text>
+            <Text>{label}</Text>
         </Pressable>
     );
 };

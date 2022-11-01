@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { View, Text } from './themed';
-
 import useThemeColor from '../hooks/useThemeColor';
-import { SessionCardProps } from './componentsTypes';
 import SessionEquipment from './SessionEquipment';
+import { SurfSessionModel } from '../database/modelTypes';
+import TagsInline from './TagsInline';
 
 const styles = StyleSheet.create({
     container: {
@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
     },
 });
 
+type SessionCardProps = {
+    sessionData: SurfSessionModel;
+    openDetail(): void;
+};
 const SessionCard = ({ sessionData, openDetail }: SessionCardProps) => {
     const mutedColor = useThemeColor('muted');
     const containerStyle = { ...styles.container, borderColor: mutedColor };
@@ -43,6 +47,7 @@ const SessionCard = ({ sessionData, openDetail }: SessionCardProps) => {
                 sagittis ligula at elit congue rhoncus. Integer feugiat, lorem sed rhoncus auctor, nibh eros condimentum
                 nibh, quis scelerisque turpis metus id lacus. Fusce sed risus at ex auctor commodo eget eu odio
             </Text>
+            <TagsInline tags={['onshore', 'big-wave', 'sunny']} />
             <View style={forecastWrapperStyle}>
                 <Text>
                     <Text style={{ fontWeight: '600' }}>Conditions:</Text> hightide, offshore wind{' '}
