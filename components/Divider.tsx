@@ -12,6 +12,7 @@ const Divider = () => {
         marginTop: 9,
         marginBottom: 10,
         marginHorizontal: -5,
+        zIndex: -100,
     };
     return <View style={style} />;
 };

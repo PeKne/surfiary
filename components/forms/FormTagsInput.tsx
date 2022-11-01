@@ -1,41 +1,55 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Controller } from 'react-hook-form';
-import { StyleSheet } from 'react-native';
-import TagInput from 'react-native-tags-input';
-import { Text } from '../themed';
+import { AutocompleteTags } from '../themed';
 import InputContainer from './InputContainer';
 import { BaseFormInputProps } from './formTypes';
+import Tag from '../Tag';
+import AutocompleteSuggestion from '../AutocompleteSuggestion';
 
-const styles = StyleSheet.create({
-    inputText: {
-        paddingTop: 1,
-        fontSize: 15,
-    },
-});
+type FormTagsInputProps = BaseFormInputProps & {
+    suggestedTags?: string[];
+};
 
-type FormTagsInputProps = BaseFormInputProps;
-
-const FormTagsInput = ({ title, placeholder, defaultValue, rules = {}, ...otherProps }: FormTagsInputProps) => {
-    const [tags, setTags] = useState({
-        tag: '',
-        tagsArray: [],
-    });
+const FormTagsInput = ({
+    title,
+    placeholder,
+    defaultValue = [],
+    suggestedTags = [],
+    ...otherProps
+}: FormTagsInputProps) => {
     return (
         <Controller
-            defaultValue={defaultValue}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <InputContainer title={title} errorMessage={error?.message}>
-                    {/* <TextInput
-                        style={styles.inputText}
-                        placeholder={placeholder}
-                        defaultValue={defaultValue}
-                        onChangeText={onChange}
-                        value={value}
-                    /> */}
-                    <TagInput tags={tags} updateState={setTags} customElement={<Text>dfsdfs</Text>} />
+                    <AutocompleteTags
+                        renderTag={(tag, onPress) => <Tag key={tag} text={tag} onPress={onPress} />}
+                        renderSuggestion={(suggenstion, onPress) => (
+                            <AutocompleteSuggestion text={suggenstion} onPress={onPress} />
+                        )}
+                        tags={value}
+                        suggestions={suggestedTags}
+                        onChangeTags={(newTags: string[]) => {
+                            console.log(newTags);
+                            let lastAdded = newTags.pop();
+                            if (lastAdded === undefined) {
+                                // empty array
+                                onChange(newTags);
+                                return;
+                            }
+                            lastAdded = lastAdded.trim().toLowerCase();
+                            if (lastAdded.length > 0 && !newTags.includes(lastAdded)) {
+                                // non-empty tag and doesn't already exists in array
+                                newTags.push(lastAdded);
+                            }
+                            onChange(newTags);
+                        }}
+                        labelExtractor={(tag: string) => tag}
+                        inputProps={{ placeholder }}
+                    />
                 </InputContainer>
             )}
+            defaultValue={defaultValue}
             {...otherProps}
         />
     );

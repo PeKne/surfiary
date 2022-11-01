@@ -78,7 +78,13 @@ const SessionEditScreen = ({ navigation }: SessionStackScreenProps<'SessionEdit'
                 control={control}
                 placeholder="Anything on your mind?"
             />
-            <FormTagsInput name="input5" title="Tags" control={control} placeholder="Anything on your mind?" />
+            <FormTagsInput
+                name="input-tags"
+                title="Tags"
+                control={control}
+                suggestedTags={['offshore', 'onshore']}
+                placeholder="Type..."
+            />
             <Divider />
             <Text format="h2">Equipment:</Text>
             <FormSelectInput
