@@ -1,21 +1,43 @@
+export type TableName = 'surf_session' | 'surfboard' | 'wetsuit' | 'location' | 'tag' | 'session_tag';
 type SurfboardType = 'SHORT' | 'LONG' | 'FISH' | 'SOFT';
 type WetsuitType = 'LONG' | 'SHORT' | 'RASH';
 
-export type TableName = 'surf_session' | 'surfboard' | 'wetsuit' | 'location';
-
-export type SurfSessionModel = {
+export type SurfSession = {
     rowid?: number;
     name: string;
     description: string;
     duration: number;
     date: number;
     location_id: number;
+    surfboard_id: number;
+    wetsuit_id?: number;
     // TODO: MSW
 };
-export type SurfSessionRow = keyof SurfSessionModel;
-export type SurfSessionRowType = SurfSessionModel[SurfSessionRow];
+export type ExtendedSurfSession = SurfSession & {
+    surfboard_name: string;
+    wetsuit_name?: string;
+    location_name: string;
+    tags?: string[];
+};
+export type SurfSessionAttr = keyof SurfSession;
+export type SurfSessionAttrType = SurfSession[SurfSessionAttr];
 
-export type SurfboardModel = {
+export type Tag = {
+    rowid?: number;
+    label: string;
+};
+export type TagAttr = keyof Tag;
+export type TagAttrType = Tag[TagAttr];
+
+export type SessionTag = {
+    session_id?: number;
+    tag_label: string;
+};
+
+export type SessionTagAttr = keyof SessionTag;
+export type SessionTagAttrType = SessionTag[SessionTagAttr];
+
+export type Surfboard = {
     rowid?: number;
     name: string;
     description: string;
@@ -25,10 +47,10 @@ export type SurfboardModel = {
     type: SurfboardType;
     date: number;
 };
-export type SurfboardRow = keyof SurfboardModel;
-export type SurfboardRowType = SurfboardModel[SurfboardRow];
+export type SurfboardAttr = keyof Surfboard;
+export type SurfboardAttrType = Surfboard[SurfboardAttr];
 
-export type WetsuitModel = {
+export type Wetsuit = {
     rowid?: number;
     name: string;
     description: string;
@@ -37,19 +59,45 @@ export type WetsuitModel = {
     type: WetsuitType;
     date: number;
 };
-export type WetsuitRow = keyof WetsuitModel;
-export type WetsuitRowType = WetsuitModel[WetsuitRow];
+export type WetsuitAttr = keyof Wetsuit;
+export type WetsuitAttrType = Wetsuit[WetsuitAttr];
 
-export type LocationModel = {
+export type Location = {
     rowid?: number;
     name: string;
     longitude: number;
     latitude: number;
 };
+export type LocationAttr = keyof Location;
+export type LocationAttrType = Location[LocationAttr];
 
-export type LocationRow = keyof LocationModel;
-export type LocationRowType = LocationModel[LocationRow];
+export type DatabaseModel = SurfSession | Surfboard | Wetsuit | Location | Tag | SessionTag;
+export type ModelAttr = SurfSessionAttr | SurfboardAttr | WetsuitAttr | LocationAttr | TagAttr | SessionTagAttr;
+export type ModelAttrType =
+    | SurfSessionAttrType
+    | SurfboardAttrType
+    | WetsuitAttrType
+    | LocationAttrType
+    | TagAttrType
+    | SessionTagAttrType;
 
-export type DatabaseModel = SurfSessionModel | SurfboardModel | WetsuitModel | LocationModel;
-export type ModelRow = SurfSessionRow | SurfboardRow | WetsuitRow | LocationRow;
-export type ModelRowType = SurfSessionRowType | SurfboardRowType | WetsuitRowType | LocationRowType;
+export type DatabaseInterface = {
+    createSurfSession(data: SurfSession): void;
+    createSurfboard(data: Surfboard): void;
+    createWetsuit(data: Wetsuit): void;
+    createLocation(data: Location): void;
+    createTag(data: Tag): void;
+    createSessionTag(data: SessionTag): void;
+    readSurfSession(column?: SurfSessionAttr, value?: SurfSessionAttrType): Promise<ExtendedSurfSession[]>;
+    readSurfboard(column?: SurfboardAttr, value?: SurfboardAttrType): Promise<Surfboard[]>;
+    readWetsuit(column?: WetsuitAttr, value?: WetsuitAttrType): Promise<Wetsuit[]>;
+    readLocation(column?: LocationAttr, value?: LocationAttrType): Promise<Location[]>;
+    readTag(column?: TagAttr, value?: TagAttrType): Promise<Tag[]>;
+    readSessionTag(column?: SessionTagAttr, value?: SessionTagAttrType): Promise<SessionTag[]>;
+    removeSurfSession(column: SurfSessionAttr, value: SurfSessionAttrType): void;
+    removeSurfboard(column: SurfboardAttr, value: SurfboardAttrType): void;
+    removeWetsuit(column: WetsuitAttr, value: WetsuitAttrType): void;
+    removeLocation(column: LocationAttr, value: LocationAttrType): void;
+    removeTag(column: TagAttr, value: TagAttrType): void;
+    removeSessionTag(column: SessionTagAttr, value: SessionTagAttrType): void;
+};
