@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text as DefaultText, TextProps as DefaultTextProps } from 'react-native';
 
 import useThemeColor from '../../hooks/useThemeColor';
-import FontSizes from '../../constants/FontSizes';
+import { FontSizes } from '../../constants';
 
 type TextProps = DefaultTextProps & {
     format?: 'h1' | 'h2' | 'h3' | 'body';

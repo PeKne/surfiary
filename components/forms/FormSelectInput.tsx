@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import InputContainer from './InputContainer';
 import { BaseFormInputProps } from './formTypes';
 import { Icon, SelectDropdown } from '../themed';
-import FontSizes from '../../constants/FontSizes';
+import { FontSizes } from '../../constants';
 
 const styles = StyleSheet.create({
     button: {

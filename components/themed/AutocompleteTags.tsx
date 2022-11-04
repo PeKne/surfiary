@@ -1,6 +1,6 @@
 import React, { StyleSheet } from 'react-native';
 import DefaultAutocompleteTags, { AutocompleteTagsProps } from 'react-native-autocomplete-tags';
-import FontSizes from '../../constants/FontSizes';
+import { FontSizes } from '../../constants';
 import useThemeColor from '../../hooks/useThemeColor';
 
 const styles = StyleSheet.create({

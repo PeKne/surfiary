@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import FontSizes from '../../constants/FontSizes';
+import { FontSizes } from '../../constants';
 import { View, Text } from '../themed';
 import { InputContainerProps } from './formTypes';
 

@@ -9,7 +9,7 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 
-import Colors from '../constants/Colors';
+import { Colors } from '../constants';
 import useColorScheme from '../hooks/useColorScheme';
 import EquipmentStackNavigator from './EquipmentStackNavigator';
 import { RootTabParamList } from './navigationTypes';
