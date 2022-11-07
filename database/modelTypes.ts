@@ -2,6 +2,9 @@ export type TableName = 'surf_session' | 'surfboard' | 'wetsuit' | 'location' | 
 type SurfboardType = 'SHORT' | 'LONG' | 'FISH' | 'SOFT';
 type WetsuitType = 'LONG' | 'SHORT' | 'RASH';
 
+/**
+ * Database scheme of SurfSession Model.
+ */
 export type SurfSession = {
     rowid?: number;
     name: string;
@@ -13,12 +16,26 @@ export type SurfSession = {
     wetsuit_id?: number;
     // TODO: MSW
 };
-export type ExtendedSurfSession = SurfSession & {
+
+/**
+ * SurfSession structure returned from DB query. Extended by Foreign table data.
+ */
+export type RawSurfSession = SurfSession & {
     surfboard_name: string;
     wetsuit_name?: string;
     location_name: string;
-    tags?: string[];
+    tags?: string;
 };
+
+/**
+ * SessionStructure formatted for use in frontend view.
+ */
+export type FormattedSurfSession = RawSurfSession & {
+    datetimeFormatted: string;
+    durationFormatted: string;
+    tags: string[];
+};
+
 export type SurfSessionAttr = keyof SurfSession;
 export type SurfSessionAttrType = SurfSession[SurfSessionAttr];
 
@@ -40,8 +57,8 @@ export type SessionTagAttrType = SessionTag[SessionTagAttr];
 export type Surfboard = {
     rowid?: number;
     name: string;
-    description: string;
-    brand: string;
+    description?: string;
+    brand?: string;
     length: number;
     volume: number;
     type: SurfboardType;
@@ -53,8 +70,8 @@ export type SurfboardAttrType = Surfboard[SurfboardAttr];
 export type Wetsuit = {
     rowid?: number;
     name: string;
-    description: string;
-    brand: string;
+    description?: string;
+    brand?: string;
     thickness: number;
     type: WetsuitType;
     date: number;
@@ -88,7 +105,7 @@ export type DatabaseInterface = {
     createLocation(data: Location): void;
     createTag(data: Tag): void;
     createSessionTag(data: SessionTag): void;
-    readSurfSession(column?: SurfSessionAttr, value?: SurfSessionAttrType): Promise<ExtendedSurfSession[]>;
+    readSurfSession(column?: SurfSessionAttr, value?: SurfSessionAttrType): Promise<RawSurfSession[]>;
     readSurfboard(column?: SurfboardAttr, value?: SurfboardAttrType): Promise<Surfboard[]>;
     readWetsuit(column?: WetsuitAttr, value?: WetsuitAttrType): Promise<Wetsuit[]>;
     readLocation(column?: LocationAttr, value?: LocationAttrType): Promise<Location[]>;

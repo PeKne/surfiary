@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { DatabaseInterface } from '../database/model';
-import DatabaseContext from '../database/DatabaseContext';
+import { DatabaseInterface } from './modelTypes';
+import DatabaseContext from './DatabaseContext';
 
 const useDatabaseContext = () => {
     return useContext(DatabaseContext) as DatabaseInterface;

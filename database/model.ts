@@ -34,7 +34,7 @@ const setUpDatabase = async () => {
             yield tx.query(sql`
         CREATE TABLE IF NOT EXISTS surfboard (
             name TEXT NOT NULL,
-            description TEXT NOT NULL,
+            description TEXT,
             brand TEXT,
             length REAL,
             volume REAL,
@@ -46,7 +46,7 @@ const setUpDatabase = async () => {
             yield tx.query(sql`
         CREATE TABLE IF NOT EXISTS wetsuit (
             name TEXT NOT NULL,
-            description TEXT NOT NULL,
+            description TEXT,
             brand TEXT,
             thickness REAL,
             type TEXT CHECK( type IN ('LONG', 'SHORT', 'RASH') )   NOT NULL DEFAULT 'LONG',
@@ -173,18 +173,12 @@ const setUpDatabase = async () => {
                 );
             }
 
-            const sessionData = (await db.query(
-                sql`SELECT sesh.rowid, sesh.name, sesh.description, sesh.date, sesh.surfboard_id, sesh.wetsuit_id,
+            return db.query(
+                sql`SELECT sesh.rowid, sesh.name, sesh.description, sesh.date, sesh.duration, sesh.surfboard_id, sesh.wetsuit_id,
                 sesh.location_id, surfboard.name as surfboard_name, wetsuit.name as wetsuit_name, location.name as location_name,
                 group_concat(distinct tag_label) tags FROM surf_session as sesh LEFT JOIN surfboard LEFT JOIN wetsuit LEFT JOIN location
                 LEFT JOIN session_tag as sesh_tags on sesh.rowid = sesh_tags.session_id GROUP BY sesh.rowid ORDER BY sesh.rowid;`,
-            )) as unknown as Array<DbTypes.ExtendedSurfSession & { tags: string }>; // SELECT return strings as single concatenated string (sqlite group_concat)
-
-            return sessionData.map(instance => {
-                // split grouped tags string into array
-                const parsedTags = instance.tags ? instance.tags.split(', ') : [];
-                return { ...instance, tags: parsedTags };
-            });
+            ) as Promise<DbTypes.RawSurfSession[]>;
         },
     };
 
