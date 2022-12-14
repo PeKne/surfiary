@@ -28,19 +28,36 @@ const styles = StyleSheet.create({
     },
 });
 
-const SessionEquipment = () => {
-    // TODO: make clickable on detail screen
+type SessionEquipmentProps = {
+    data: {
+        wetsuit_id?: number;
+        wetsuit_name?: string;
+        surfboard_id: number;
+        surfboard_name: string;
+    };
+};
+const SessionEquipment = ({
+    data: { wetsuit_id = undefined, wetsuit_name = undefined, surfboard_id, surfboard_name },
+}: SessionEquipmentProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.equipment}>
-                <ImageIcon icon="surf" />
-                <View style={styles.titleWrapper}>
-                    <Text style={styles.equipmentTitle}> Darkside</Text>
-                </View>
-                <ImageIcon icon="wetsuit" />
-                <View style={styles.titleWrapper}>
-                    <Text style={styles.equipmentTitle}> O'neil 4.3</Text>
-                </View>
+                {surfboard_id && surfboard_name && (
+                    <>
+                        <ImageIcon name="surf" />
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.equipmentTitle}> {surfboard_name}</Text>
+                        </View>
+                    </>
+                )}
+                {wetsuit_id && wetsuit_name && (
+                    <>
+                        <ImageIcon name="wetsuit" />
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.equipmentTitle}> {wetsuit_name}</Text>
+                        </View>
+                    </>
+                )}
             </View>
         </View>
     );

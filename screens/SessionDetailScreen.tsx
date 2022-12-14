@@ -4,30 +4,12 @@ import { StyleSheet } from 'react-native';
 import { Text, View, Icon } from '../components/themed';
 
 import { SessionStackScreenProps } from '../navigation/navigationTypes';
-import DetailAttribute from '../components/DetailAttribute';
-import Divider from '../components/Divider';
+import { DetailAttributeProps } from '../components/DetailAttribute';
 import SessionEquipment from '../components/SessionEquipment';
 import TagsInline from '../components/TagsInline';
+import DetailScreenContent, { DetailSection } from '../components/DetailScreenContent';
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignContent: 'flex-start',
-        paddingHorizontal: 10,
-    },
-    headerContainer: {
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 15,
-    },
-    sectionContainer: {
-        width: '100%',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        paddingTop: 10,
-        // marginHorizontal: ,
-    },
     equipmentWrapper: {
         paddingTop: 5,
         width: '100%',
@@ -35,44 +17,50 @@ const styles = StyleSheet.create({
     },
 });
 
-const SessionDetailScreen = ({ navigation }: SessionStackScreenProps<'SessionDetail'>) => {
+const SessionDetailScreen = ({ navigation, route }: SessionStackScreenProps<'SessionDetail'>) => {
+    const { sessionData } = route.params;
     useEffect(() => {
         navigation.setOptions({
-            title: 'Detailed screen',
-            headerRight: () => Icon({ name: 'pencil-square-o', onPress: () => navigation.navigate('SessionEdit') }),
+            title: sessionData.name,
+            headerRight: () =>
+                Icon({ name: 'edit', onPress: () => navigation.navigate('SessionEdit', { sessionData }) }),
         });
-    }, [navigation]);
-    return (
-        <View style={styles.container}>
-            <View style={styles.headerContainer}>
-                <DetailAttribute icon="map-marker" title="Location" value="Echo beach, Canggu" />
-                <DetailAttribute icon="calendar" title="Date" value="2nd July 2022" />
-                <DetailAttribute icon="clock-o" title="Duration" value="2 hours" />
-            </View>
-            <Divider />
+    }, [navigation, sessionData]);
 
-            <View style={styles.sectionContainer}>
-                <Text format="h2">Equipment:</Text>
-                {/* TODO make clickable */}
+    const getEquipmentData = () => {
+        const { wetsuit_id, wetsuit_name, surfboard_id, surfboard_name } = sessionData;
+        return { wetsuit_id, wetsuit_name, surfboard_id, surfboard_name };
+    };
+
+    const headerAttributes: DetailAttributeProps[] = [
+        { iconName: 'map-marker-alt', title: 'Location', value: sessionData.location_name },
+        { iconName: 'calendar-alt', title: 'Date', value: sessionData.datetimeFormatted },
+        { iconName: 'clock', title: 'Duration', value: sessionData.durationFormatted },
+    ];
+
+    const sections: DetailSection[] = [
+        {
+            title: 'Equipment',
+            content: (
                 <View style={styles.equipmentWrapper}>
-                    <SessionEquipment />
+                    <SessionEquipment data={getEquipmentData()} />
                 </View>
-            </View>
-            <View style={styles.sectionContainer}>
-                <Text format="h2">Notes:</Text>
-                <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur rhoncus a diam in tempus. Aliquam
-                    sagittis ligula at elit congue rhoncus. Integer feugiat, lorem sed rhoncus auctor, nibh eros
-                    condimentum nibh, quis scelerisque turpis metus id lacus. Fusce sed risus at ex auctor commodo eget
-                    eu odio
-                </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-                <Text format="h2">Tags:</Text>
-                <TagsInline tags={['onshore', 'big-wave', 'sunny']} />
-            </View>
-        </View>
-    );
+            ),
+        },
+        {
+            title: 'Notes',
+            content: <Text>{sessionData.description}</Text>,
+        },
+    ];
+
+    if (sessionData.tags.length > 0) {
+        sections.push({
+            title: 'Tags',
+            content: <TagsInline tags={sessionData.tags} />,
+        });
+    }
+
+    return <DetailScreenContent headerAttributes={headerAttributes} sections={sections} />;
 };
 
 export default SessionDetailScreen;

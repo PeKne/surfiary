@@ -3,24 +3,29 @@ import { StyleSheet, Image, ImageSourcePropType } from 'react-native';
 
 import { View } from './themed';
 import useColorScheme from '../hooks/useColorScheme';
-import { ImageIconProps } from './componentsTypes';
 
-const ICON_SIZE = 35;
+const DEFAULT_ICON_SIZE = 35;
 
 const styles = StyleSheet.create({
     container: {
-        minWidth: ICON_SIZE,
-        minHeight: ICON_SIZE,
+        minWidth: DEFAULT_ICON_SIZE,
+        minHeight: DEFAULT_ICON_SIZE,
+        backgroundColor: 'transparent',
     },
-    icon: { maxWidth: ICON_SIZE, height: ICON_SIZE, resizeMode: 'contain' },
+    icon: { maxWidth: DEFAULT_ICON_SIZE, height: DEFAULT_ICON_SIZE, resizeMode: 'contain' },
 });
 
-const iconSourceMapLight: Record<string, ImageSourcePropType> = {
+type ImageIconProps = {
+    name: 'surf' | 'wetsuit';
+    size?: number;
+};
+
+const iconSourceMapLight: Record<ImageIconProps['name'], ImageSourcePropType> = {
     surf: require('../assets/icons/surfboard-light.png'),
     wetsuit: require('../assets/icons/wetsuit-light.png'),
 };
 
-const iconSourceMapDark: Record<string, ImageSourcePropType> = {
+const iconSourceMapDark: Record<ImageIconProps['name'], ImageSourcePropType> = {
     surf: require('../assets/icons/surfboard-dark.png'),
     wetsuit: require('../assets/icons/wetsuit-dark.png'),
 };
@@ -28,18 +33,21 @@ const iconSourceMapDark: Record<string, ImageSourcePropType> = {
 /**
  * Renders custom PNG icon according to the selecter color theme.
  */
-const ImageIcon = ({ icon }: ImageIconProps) => {
+const ImageIcon = ({ name, size }: ImageIconProps) => {
     const colorScheme = useColorScheme();
 
     let imageSource;
     if (colorScheme === 'light') {
-        imageSource = iconSourceMapDark[icon];
+        imageSource = iconSourceMapDark[name];
     } else {
-        imageSource = iconSourceMapLight[icon];
+        imageSource = iconSourceMapLight[name];
     }
+
+    const containerStyle = { ...styles.container, ...(size ? { minWidth: size, minHeight: size } : {}) };
+    const iconStyle = { ...styles.icon, ...(size ? { maxWidth: size, height: size } : {}) };
     return (
-        <View style={styles.container}>
-            <Image source={imageSource} fadeDuration={0} style={styles.icon} />
+        <View style={containerStyle}>
+            <Image source={imageSource} fadeDuration={0} style={iconStyle} />
         </View>
     );
 };

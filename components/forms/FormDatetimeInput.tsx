@@ -6,7 +6,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Text, Icon } from '../themed';
 import InputContainer from './InputContainer';
 import { BaseFormInputProps } from './formTypes';
-import { datetimeToUnix, formatTimestamp } from '../../utils';
+import { datetimeToUnix, formatTimestampShort } from '../../utils';
 
 const styles = StyleSheet.create({
     container: {
@@ -17,18 +17,19 @@ const styles = StyleSheet.create({
     },
 });
 
-type FormDatetimeInputProps = BaseFormInputProps;
+type FormDatetimeInputProps = BaseFormInputProps & {
+    defaultValue?: number;
+};
 
-const FormDatetimeInput = ({ title, defaultValue, ...otherProps }: FormDatetimeInputProps) => {
+const FormDatetimeInput = ({ title, ...otherProps }: FormDatetimeInputProps) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     return (
         <Controller
-            defaultValue={defaultValue}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <InputContainer title={title} errorMessage={error?.message}>
                     <TouchableOpacity onPress={() => setDatePickerVisibility(true)} style={styles.container}>
-                        <Text>{formatTimestamp(value)}</Text>
+                        <Text>{formatTimestampShort(value)}</Text>
                         <Icon name="calendar" size={20} />
                         <DateTimePickerModal
                             isVisible={isDatePickerVisible}

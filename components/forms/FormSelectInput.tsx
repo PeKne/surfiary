@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     row: {
-        height: 35,
+        height: 40,
         borderBottomWidth: 0.2,
     },
     buttonText: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 0,
     },
     searchInput: {
-        height: 35,
+        height: 20,
     },
 });
 

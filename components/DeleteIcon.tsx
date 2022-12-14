@@ -14,7 +14,7 @@ const DeleteIcon = ({ onDelete }: { onDelete(): void }) => {
         ]);
     };
 
-    return <Icon name="trash" onPress={confirmDelete} />;
+    return <Icon name="trash-alt" onPress={confirmDelete} />;
 };
 
 export default DeleteIcon;

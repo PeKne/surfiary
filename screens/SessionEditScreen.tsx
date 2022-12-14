@@ -2,16 +2,19 @@ import React, { useEffect } from 'react';
 import { Button, StyleSheet } from 'react-native';
 
 import { useForm } from 'react-hook-form';
-import { Text, View } from '../components/themed';
+import { Text, ScrollView, Icon } from '../components/themed';
 
 import { SessionStackScreenProps } from '../navigation/navigationTypes';
-import DeleteIcon from '../components/DeleteIcon';
 import FormTextInput from '../components/forms/FormTextInput';
 import FormSelectInput from '../components/forms/FormSelectInput';
 import FormDatetimeInput from '../components/forms/FormDatetimeInput';
 import { datetimeToUnix } from '../utils';
 import Divider from '../components/Divider';
 import FormTagsInput from '../components/forms/FormTagsInput';
+import useGetSurfboards from '../database/useGetSurfboards';
+import { Surfboard, Wetsuit, Location } from '../database/modelTypes';
+import useGetWetsuits from '../database/useGetWetsuits';
+import useGetLocations from '../database/useGetLocations';
 
 const styles = StyleSheet.create({
     container: {
@@ -22,97 +25,115 @@ const styles = StyleSheet.create({
     },
 });
 
-const SessionEditScreen = ({ navigation }: SessionStackScreenProps<'SessionEdit'>) => {
+const SessionEditScreen = ({ navigation, route }: SessionStackScreenProps<'SessionEdit'>) => {
+    const sessionData = route.params?.sessionData;
+    const surfboards = useGetSurfboards();
+    const wetsuits = useGetWetsuits();
+    const locations = useGetLocations();
     const { control, handleSubmit } = useForm();
     useEffect(() => {
         navigation.setOptions({
             title: 'New Session',
-            headerRight: () => DeleteIcon({ onDelete: () => navigation.navigate('SessionList') }),
-            // TODO: create real delete function
+            headerRight: () => Icon({ name: 'trash-alt', onPress: () => null }), // TODO: implement real deletion
         });
     }, [navigation]);
 
+    /**
+     * Generates generic session title based on time of the day.
+     */
     const getDefaultTitleValue = () => {
-        return 'Evening Session'; // TODO: generate title based on time of day
+        const currentHour = new Date().getHours();
+        if (currentHour < 12) {
+            return 'Morning Session';
+        }
+        if (currentHour < 17) {
+            return 'Afternoon Session';
+        }
+        return 'Evening Session';
+    };
+
+    const formatSelectValues = (optionObjects: Surfboard[] | Wetsuit[] | Location[]) => {
+        const options: Record<string, number> = {};
+        optionObjects.forEach(board => {
+            options[board.name] = board.rowid!;
+        });
+        return options;
     };
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container} nestedScrollEnabled={false}>
             <Text format="h2">Details:</Text>
             <FormTextInput
                 fieldType="text"
-                name="input1"
+                name="name"
+                defaultValue={sessionData?.name ?? getDefaultTitleValue()}
                 title="Title"
                 placeholder="How you name it?"
-                defaultValue={getDefaultTitleValue}
                 control={control}
                 rules={{ required: 'Title is required.' }}
             />
             <FormDatetimeInput
-                defaultValue={datetimeToUnix(new Date())}
-                name="input2"
+                name="date"
+                defaultValue={sessionData?.date ?? datetimeToUnix(new Date())}
                 title="Date"
                 control={control}
                 placeholder="Where was it?"
                 rules={{ required: 'Location is required.' }}
             />
             <FormSelectInput
-                name="input3"
+                name="location"
+                defaultValue={sessionData?.location_id}
                 title="Location"
                 control={control}
-                options={{ Canggu: 1, Pipeline: 2, Extreme: 3, Uluwatu: 4 }}
+                options={formatSelectValues(locations)}
                 placeholder="Where was it?"
                 searchPlaceholder="search spots..."
                 rules={{ required: 'Choose a surf spot.' }}
             />
             <FormTextInput
                 fieldType="number"
-                name="input4"
+                name="duration"
+                defaultValue={sessionData?.duration}
                 title="Duration"
                 placeholder="How long? (minutes)"
                 control={control}
             />
             <FormTextInput
                 fieldType="textarea"
-                name="input5"
+                name="description"
+                defaultValue={sessionData?.description}
                 title="Notes"
                 control={control}
                 placeholder="Anything on your mind?"
             />
             <FormTagsInput
-                name="input-tags"
+                name="tags"
                 title="Tags"
+                defaultValue={sessionData?.tags ?? []}
                 control={control}
-                suggestedTags={['offshore', 'onshore']}
+                suggestedTags={['offshore', 'onshore', 'owindy', 'osuperb', 'oclosing out']}
                 placeholder="Type..."
             />
             <Divider />
             <Text format="h2">Equipment:</Text>
             <FormSelectInput
-                name="input6"
+                name="board"
+                defaultValue={sessionData?.surfboard_id}
                 title="Board"
                 control={control}
-                options={{ Board: 1, Long: 2, Fish: 3, Boss: 4 }}
+                options={formatSelectValues(surfboards)}
                 placeholder="Which board?"
                 searchPlaceholder="search spots..."
                 rules={{ required: 'Select one of your boards.' }}
             />
             <FormSelectInput
-                name="input7"
+                name="wetsuit"
+                defaultValue={sessionData?.wetsuit_id}
                 title="Wetsuit"
                 control={control}
-                options={{ "O'neil": 1, Ripcurl: 2, 'Da Vinci': 3, Michelangelo: 4 }}
+                options={formatSelectValues(wetsuits)}
                 placeholder="Which wetsuit?"
                 searchPlaceholder="search spots..."
             />
-            <Divider />
-            <Text format="h2">Conditions:</Text>
-
-            {/* TODO: Tags */}
-            {/* TODO: Location Widget */}
-
-            {/* TODO: Equipment */}
-            {/* TODO: Weather integration */}
-
             <Button
                 title="SAVE"
                 onPress={handleSubmit(
@@ -120,7 +141,7 @@ const SessionEditScreen = ({ navigation }: SessionStackScreenProps<'SessionEdit'
                     errors => console.log('FAIL', errors),
                 )}
             />
-        </View>
+        </ScrollView>
     );
 };
 

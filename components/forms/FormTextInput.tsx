@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
 
 type FormTextInputProps = BaseFormInputProps & {
     fieldType: 'text' | 'textarea' | 'number';
+    defaultValue?: string | number;
 };
 
 const FormTextInput = ({
@@ -27,7 +28,6 @@ const FormTextInput = ({
     ...otherProps
 }: FormTextInputProps) => {
     const isNumber = fieldType === 'number';
-
     /**
      * Helper function for react-hook-form validation configuration.
      */
@@ -49,7 +49,7 @@ const FormTextInput = ({
                         multiline={fieldType === 'textarea'}
                         style={styles.inputText}
                         placeholder={placeholder}
-                        defaultValue={defaultValue}
+                        defaultValue={defaultValue?.toString()}
                         onChangeText={onChange}
                         value={value}
                     />

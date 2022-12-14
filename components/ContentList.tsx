@@ -4,7 +4,7 @@ import { StyleSheet, FlatList, FlatListProps } from 'react-native';
 import Divider from '../components/Divider';
 import ListPlaceholder, { ListPlaceholderProps } from '../components/ListPlaceholder';
 import { View } from '../components/themed';
-import { FormattedSurfSession, Surfboard, Wetsuit } from '../database/modelTypes';
+import { SurfSessionFormatted, Wetsuit, SurfboardFormatted } from '../database/modelTypes';
 
 const styles = StyleSheet.create({
     container: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 });
-type ListCompatibleModel = FormattedSurfSession | Surfboard | Wetsuit;
+type ListCompatibleModel = SurfSessionFormatted | SurfboardFormatted | Wetsuit;
 type ContentListProps<T> = Pick<FlatListProps<T>, 'data' | 'renderItem'> & {
     placeholderProps: ListPlaceholderProps;
 };

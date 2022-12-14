@@ -7,28 +7,35 @@
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 
-import { RootStackParamList } from './navigationTypes';
+import { RootTabParamList } from './navigationTypes';
 
-const linking: LinkingOptions<RootStackParamList> = {
+const linking: LinkingOptions<RootTabParamList> = {
     prefixes: [Linking.createURL('/')],
     config: {
         screens: {
-            Root: {
+            SessionStackNavigator: {
+                screens: { SessionList: 'SessionList', SessionDetail: 'SessionDetail', SessionEdit: 'SessionEdit' },
+            },
+            EquipmentTabNavigator: {
                 screens: {
-                    TabOne: {
+                    SurfboardStackNavigator: {
                         screens: {
-                            TabOneScreen: 'one',
+                            SurfboardList: 'SurfboardList',
+                            SurfboardDetail: 'SurfboardDetail',
+                            SurfboardEdit: 'SurfboardEdit',
                         },
                     },
-                    TabTwo: {
+                    WetsuitStackNavigator: {
                         screens: {
-                            TabTwoScreen: 'two',
+                            WetsuitList: 'WetsuitList',
+                            WetsuitDetail: 'WetsuitDetail',
+                            WetsuitEdit: 'WetsuitEdit',
                         },
                     },
                 },
             },
-            Modal: 'modal',
-            NotFound: '*',
+            Stats: 'Stats',
+            Settings: 'Settings',
         },
     },
 };

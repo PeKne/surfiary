@@ -20,8 +20,7 @@ const SessionStackNavigator = () => {
                         title: 'Surf Sessions',
                         headerRight: () =>
                             Icon({
-                                name: 'plus-square-o',
-                                size: 22,
+                                name: 'plus-square',
                                 onPress: () => navigation.navigate('SessionEdit'),
                             }),
                     };

@@ -1,6 +1,6 @@
 export type TableName = 'surf_session' | 'surfboard' | 'wetsuit' | 'location' | 'tag' | 'session_tag';
-type SurfboardType = 'SHORT' | 'LONG' | 'FISH' | 'SOFT';
-type WetsuitType = 'LONG' | 'SHORT' | 'RASH';
+export type SurfboardType = 'SHORT' | 'LONG' | 'FISH' | 'SOFT';
+export type WetsuitType = 'LONG' | 'SHORT' | 'RASH';
 
 /**
  * Database scheme of SurfSession Model.
@@ -14,13 +14,12 @@ export type SurfSession = {
     location_id: number;
     surfboard_id: number;
     wetsuit_id?: number;
-    // TODO: MSW
 };
 
 /**
  * SurfSession structure returned from DB query. Extended by Foreign table data.
  */
-export type RawSurfSession = SurfSession & {
+export type SurfSessionRaw = SurfSession & {
     surfboard_name: string;
     wetsuit_name?: string;
     location_name: string;
@@ -30,7 +29,7 @@ export type RawSurfSession = SurfSession & {
 /**
  * SessionStructure formatted for use in frontend view.
  */
-export type FormattedSurfSession = RawSurfSession & {
+export type SurfSessionFormatted = SurfSessionRaw & {
     datetimeFormatted: string;
     durationFormatted: string;
     tags: string[];
@@ -64,6 +63,12 @@ export type Surfboard = {
     type: SurfboardType;
     date: number;
 };
+
+export type SurfboardFormatted = Surfboard & {
+    dateFormatted: string;
+    typeFormatted: string;
+};
+
 export type SurfboardAttr = keyof Surfboard;
 export type SurfboardAttrType = Surfboard[SurfboardAttr];
 
@@ -75,6 +80,11 @@ export type Wetsuit = {
     thickness: number;
     type: WetsuitType;
     date: number;
+};
+
+export type WetsuitFormatted = Wetsuit & {
+    dateFormatted: string;
+    typeFormatted: string;
 };
 export type WetsuitAttr = keyof Wetsuit;
 export type WetsuitAttrType = Wetsuit[WetsuitAttr];
@@ -88,7 +98,14 @@ export type Location = {
 export type LocationAttr = keyof Location;
 export type LocationAttrType = Location[LocationAttr];
 
-export type DatabaseModel = SurfSession | Surfboard | Wetsuit | Location | Tag | SessionTag;
+export type DatabaseModel = SurfSessionRaw | Surfboard | Wetsuit | Location | Tag | SessionTag;
+export type FormattedDatabaseModel =
+    | SurfSessionFormatted
+    | SurfboardFormatted
+    | WetsuitFormatted
+    | Location
+    | Tag
+    | SessionTag;
 export type ModelAttr = SurfSessionAttr | SurfboardAttr | WetsuitAttr | LocationAttr | TagAttr | SessionTagAttr;
 export type ModelAttrType =
     | SurfSessionAttrType
@@ -105,7 +122,7 @@ export type DatabaseInterface = {
     createLocation(data: Location): void;
     createTag(data: Tag): void;
     createSessionTag(data: SessionTag): void;
-    readSurfSession(column?: SurfSessionAttr, value?: SurfSessionAttrType): Promise<RawSurfSession[]>;
+    readSurfSession(column?: SurfSessionAttr, value?: SurfSessionAttrType): Promise<SurfSessionRaw[]>;
     readSurfboard(column?: SurfboardAttr, value?: SurfboardAttrType): Promise<Surfboard[]>;
     readWetsuit(column?: WetsuitAttr, value?: WetsuitAttrType): Promise<Wetsuit[]>;
     readLocation(column?: LocationAttr, value?: LocationAttrType): Promise<Location[]>;

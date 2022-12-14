@@ -24,7 +24,6 @@ const ListPlaceholder = ({ message, buttonTitle, buttonOnPress }: ListPlaceholde
                 {message}
             </Text>
             <Button title={buttonTitle} onPress={buttonOnPress} />
-            {/* //TODO: custom button */}
         </View>
     );
 };

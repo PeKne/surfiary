@@ -14,11 +14,11 @@ type TagInlineProps = {
     tags: string[];
 };
 const TagsInline = ({ tags }: TagInlineProps) => {
-    //TODO: onPress navigate to SessionList filtered
+    // TODO: onPress navigate to SessionList filtered
     return (
         <View style={styles.container}>
             {tags.map(label => (
-                <Tag label={label} />
+                <Tag key={label} label={label} />
             ))}
         </View>
     );

@@ -178,7 +178,7 @@ const setUpDatabase = async () => {
                 sesh.location_id, surfboard.name as surfboard_name, wetsuit.name as wetsuit_name, location.name as location_name,
                 group_concat(distinct tag_label) tags FROM surf_session as sesh LEFT JOIN surfboard LEFT JOIN wetsuit LEFT JOIN location
                 LEFT JOIN session_tag as sesh_tags on sesh.rowid = sesh_tags.session_id GROUP BY sesh.rowid ORDER BY sesh.rowid;`,
-            ) as Promise<DbTypes.RawSurfSession[]>;
+            ) as Promise<DbTypes.SurfSessionRaw[]>;
         },
     };
 
@@ -186,7 +186,6 @@ const setUpDatabase = async () => {
     await initTables();
     await mockData(databaseInterface);
 
-    // TODO: proper filter logic
     return Object.freeze(databaseInterface);
 };
 

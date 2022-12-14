@@ -1,15 +1,14 @@
 import React from 'react';
-import { FontAwesome } from '@expo/vector-icons';
+import FontAwesome from '@expo/vector-icons/FontAwesome5';
+import { FontAwesome5IconProps } from 'react-native-vector-icons/FontAwesome5';
 import useThemeColor from '../../hooks/useThemeColor';
 
-type IconProps = React.ComponentProps<typeof FontAwesome>;
+const Icon = ({ style, color, size = 20, ...otherProps }: FontAwesome5IconProps) => {
+    const themeColor = useThemeColor('text');
+    const backgroudColor = useThemeColor('background');
+    const themed = { backgroudColor, marginTop: -3 };
 
-const Icon = ({ style, size = 20, ...otherProps }: IconProps) => {
-    const color = useThemeColor('text');
-    const backgroundColor = useThemeColor('background');
-    const themed = { color, backgroundColor, marginTop: -3 };
-
-    return <FontAwesome style={[themed, style]} size={size} {...otherProps} />;
+    return <FontAwesome style={[themed, style]} size={size} color={color ?? themeColor} solid {...otherProps} />;
 };
 
 export default Icon;

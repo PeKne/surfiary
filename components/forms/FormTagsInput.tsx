@@ -37,7 +37,7 @@ const FormTagsInput = ({
                                 onChange(newTags);
                                 return;
                             }
-                            lastAdded = lastAdded.trim().toLowerCase();
+                            lastAdded = lastAdded.trim();
                             if (lastAdded.length > 0 && !newTags.includes(lastAdded)) {
                                 // non-empty tag and doesn't already exists in array
                                 newTags.push(lastAdded);
@@ -46,6 +46,8 @@ const FormTagsInput = ({
                         }}
                         labelExtractor={(tag: string) => tag}
                         inputProps={{ placeholder }}
+                        flatListProps={{ horizontal: true }}
+                        flatListStyle={{ maxHeight: 200, position: 'relative' }}
                     />
                 </InputContainer>
             )}

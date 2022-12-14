@@ -1,32 +1,50 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { ListRenderItemInfo } from 'react-native';
+import WetsuitCard from '../components/cards/WetsuitCard';
+import ContentList from '../components/ContentList';
 
-import { Text, View } from '../components/themed';
+import { Wetsuit, WetsuitFormatted, WetsuitType } from '../database/modelTypes';
+import useReadDatabaseTable from '../database/useReadDatabaseTable';
 import { WetsuitStackScreenProps } from '../navigation/navigationTypes';
+import { formatTimestamp } from '../utils';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: '80%',
-    },
-});
+const formatWetsuitType = (type_code: WetsuitType) => {
+    switch (type_code) {
+        case 'SHORT':
+            return 'Shortsleeve';
+        case 'LONG':
+            return 'Longsleeve';
+        case 'RASH':
+            return 'Rashguard';
+        default:
+            return 'Unknown';
+    }
+};
 
-// TODO: fix Stack screen props everywhere!!!
+const wetsuitFormatter = (wetsuit: Wetsuit): WetsuitFormatted => {
+    return {
+        ...wetsuit,
+        dateFormatted: formatTimestamp(wetsuit.date, 'date'),
+        typeFormatted: formatWetsuitType(wetsuit.type),
+    };
+};
+
 const WetsuitListScreen = ({ navigation }: WetsuitStackScreenProps<'WetsuitList'>) => {
+    const wetsuits = useReadDatabaseTable('wetsuit', wetsuitFormatter);
+
+    const renderItem = ({ item }: ListRenderItemInfo<WetsuitFormatted>) => (
+        <WetsuitCard data={item} onPress={() => navigation.push('WetsuitDetail', { wetsuit: item })} />
+    );
     return (
-        <View style={styles.container}>
-            <Text>Wetsuit Tab</Text>
-            <View style={styles.separator} />
-            <Pressable onPress={() => navigation.navigate('WetsuitDetail')}>
-                <Text> go to Detail screen</Text>
-            </Pressable>
-        </View>
+        <ContentList
+            data={wetsuits}
+            renderItem={renderItem}
+            placeholderProps={{
+                message: 'No surfboard listed yeat.',
+                buttonTitle: 'Save the first one!',
+                buttonOnPress: () => navigation.navigate('WetsuitEdit'),
+            }}
+        />
     );
 };
 
